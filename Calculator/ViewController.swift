@@ -26,12 +26,15 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     @IBAction func pressedPlus(_ sender: Any) {
@@ -86,6 +89,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func pressedNumber(_ sender: UIButton) {
+        if labelText.characters.count == 10 && !lastButtonWasOperation {
+            return
+        }
+        
         let buttonValue:String? = sender.titleLabel?.text
         
         if lastButtonWasOperation {
