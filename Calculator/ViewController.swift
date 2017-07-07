@@ -21,18 +21,9 @@ class ViewController: UIViewController {
     
     var labelText:String = "0"
     var currentOperation:operations = .not_set
-    var savedNum:Int = 0
+    var savedNum:Double = 0
     var lastButtonWasOperation:Bool = false
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -53,9 +44,8 @@ class ViewController: UIViewController {
         changeOperation(.division)
     }
     
-    
     @IBAction func pressedEquals(_ sender: Any) {
-        guard let labelInt:Int = Int(labelText) else {
+        guard let labelDouble:Double = Double(labelText) else {
             return
         }
         
@@ -65,13 +55,13 @@ class ViewController: UIViewController {
         
         switch currentOperation {
         case .addition:
-            savedNum += labelInt
+            savedNum += labelDouble
         case .subtraction:
-            savedNum -= labelInt
+            savedNum -= labelDouble
         case .multiplication:
-            savedNum *= labelInt
+            savedNum *= labelDouble
         case .division:
-            savedNum /= labelInt
+            savedNum /= labelDouble
         default:
             return
         }
@@ -80,12 +70,6 @@ class ViewController: UIViewController {
         labelText = "\(savedNum)"
         updateText()
         lastButtonWasOperation = true
-        
-        if currentOperation == .addition {
-            savedNum += labelInt
-        } else if currentOperation == .subtraction {
-            savedNum -= labelInt
-        }
     }
     
     @IBAction func pressedNumber(_ sender: UIButton) {
@@ -114,18 +98,25 @@ class ViewController: UIViewController {
     }
     
     func updateText() {
-        guard let labelInt:Int = Int(labelText) else {
+        guard let labelDouble:Double = Double(labelText) else {
             return
         }
         
         if currentOperation == .not_set {
-            savedNum = labelInt
+            savedNum = labelDouble
         }
         
         let formatter:NumberFormatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        let num:NSNumber = NSNumber(value: labelInt)
         
+        //If the label is at its length limit, change the number to Scientific notation
+        if labelText.characters.count > 10 {
+            formatter.numberStyle = .scientific
+            formatter.maximumFractionDigits = 6
+        } else {
+            formatter.numberStyle = .decimal
+        }
+        
+        let num:NSNumber = NSNumber(value: labelDouble)
         output.text = formatter.string(from: num)
     }
     
