@@ -2,9 +2,10 @@
 //  ViewController.swift
 //  Calculator
 //
-//  Created by Robert on 7/3/17.
+//  Created by Robert Lent on 7/3/17.
 //  Copyright © 2017 Lent Coding. All rights reserved.
 //
+//  Updated on 2/25/18.
 
 import UIKit
 
@@ -23,25 +24,25 @@ class ViewController: UIViewController {
     var currentOperation:operations = .not_set
     var savedNum:Double = 0
     var lastButtonWasOperation:Bool = false
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
     
     @IBAction func pressedPlus(_ sender: Any) {
-        changeOperation(.addition)
+        changeOperation(newOperation: .addition)
     }
-
+    
     @IBAction func pressedSubract(_ sender: Any) {
-        changeOperation(.subtraction)
+        changeOperation(newOperation: .subtraction)
     }
     
     @IBAction func pressedMultiply(_ sender: Any) {
-        changeOperation(.multiplication)
+        changeOperation(newOperation: .multiplication)
     }
     
     @IBAction func pressedDivide(_ sender: Any) {
-        changeOperation(.division)
+        changeOperation(newOperation: .division)
     }
     
     @IBAction func pressedEquals(_ sender: Any) {
@@ -72,8 +73,16 @@ class ViewController: UIViewController {
         lastButtonWasOperation = true
     }
     
+    @IBAction func pressedClear(_ sender: Any) {
+        labelText = "0";
+        currentOperation = .not_set
+        savedNum = 0
+        lastButtonWasOperation = false
+        output.text = "0"
+    }
+    
     @IBAction func pressedNumber(_ sender: UIButton) {
-        if labelText.characters.count == 10 && !lastButtonWasOperation {
+        if labelText.count == 10 && !lastButtonWasOperation {
             return
         }
         
@@ -89,14 +98,6 @@ class ViewController: UIViewController {
         updateText()
     }
     
-    @IBAction func pressedClear(_ sender: Any) {
-        labelText = "0"
-        currentOperation = .not_set
-        savedNum = 0
-        lastButtonWasOperation = false
-        output.text = "0"
-    }
-    
     func updateText() {
         guard let labelDouble:Double = Double(labelText) else {
             return
@@ -109,7 +110,7 @@ class ViewController: UIViewController {
         let formatter:NumberFormatter = NumberFormatter()
         
         //If the label is at its length limit, change the number to Scientific notation
-        if labelText.characters.count > 10 {
+        if labelText.count > 10 {
             formatter.numberStyle = .scientific
             formatter.maximumFractionDigits = 6
         } else {
@@ -120,14 +121,14 @@ class ViewController: UIViewController {
         output.text = formatter.string(from: num)
     }
     
-    func changeOperation(_ newOperation:operations) {
-        if savedNum == 0 {
+    func changeOperation(newOperation:operations) {
+        if (savedNum == 0) {
             return
         }
         
         currentOperation = newOperation
         lastButtonWasOperation = true
     }
-    
+
 }
 

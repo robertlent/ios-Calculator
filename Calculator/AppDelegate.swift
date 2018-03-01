@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Calculator
 //
-//  Created by Robert on 7/3/17.
+//  Created by Robert Lent on 7/3/17.
 //  Copyright © 2017 Lent Coding. All rights reserved.
 //
 
